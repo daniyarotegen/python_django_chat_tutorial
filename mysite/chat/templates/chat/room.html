@@ -193,11 +193,16 @@
                 margin-right: 0;
             }
         }
-    </style>
+
+</style>
 </head>
 
 <body>
-    <ul id="chat-thread" class="chat-thread"></ul>
+    <ul id="chat-thread" class="chat-thread">
+        {% for message in old_messages %}
+            <li>{{ message.message }}</li>
+        {% endfor %}
+    </ul>
     <div class="chat-message">
         <input id="chat-message-input" class="chat-message-input" type="text" autocomplete="off" autofocus />
     </div>
