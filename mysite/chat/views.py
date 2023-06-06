@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 import logging
 from .models import ChatMessage
 
-# Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
