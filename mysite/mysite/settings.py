@@ -49,11 +49,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'centrifugo',
+        'NAME': 'cen_3',
         'USER': 'macbookair',
         'PASSWORD': '618396',
-        'HOST': 'db',
-        'PORT': '5432',
+        'HOST': 'host.docker.internal',
+        'PORT': '',
     }
 }
 
