@@ -5,15 +5,19 @@ SECRET_KEY = 'django-insecure-ohte()qz$hcz3#kj%^3#y1fsmr5ouy)kzy(khqxwoi+9$^ygys
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'app']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:9000', 'https://localhost:9000']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
-    'chat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'chat',
+    'profiles',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +61,7 @@ DATABASES = {
     }
 }
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -77,6 +82,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+AUTH_USER_MODEL = 'profiles.Profile'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
