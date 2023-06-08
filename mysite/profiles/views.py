@@ -25,7 +25,7 @@ class SignUpView(FormView):
 class LoginView(FormView):
     form_class = AuthenticationForm
     template_name = 'profiles/login.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('user_list')
 
     def form_valid(self, form):
         self.user = form.get_user()

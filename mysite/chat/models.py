@@ -24,7 +24,8 @@ class ChatRoom(models.Model):
     )
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ChatRoomMembership', related_name='chat_rooms')
     avatar = models.ImageField(upload_to='groupchats/', null=True, blank=True)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_groups', null=True, blank=True)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_groups',
+                                null=True, blank=True)
 
     def is_group_chat(self):
         return self.chat_type == ChatType.GROUP.name
@@ -45,7 +46,7 @@ class ChatRoomMembership(models.Model):
 
 class ChatMessage(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    room_name = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
 
