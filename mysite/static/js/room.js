@@ -1,4 +1,4 @@
-const roomName = JSON.parse(document.getElementById('room-name').textContent);
+const roomId = JSON.parse(document.getElementById('room-id').textContent);
 const chatThread = document.querySelector('#chat-thread');
 const messageInput = document.querySelector('#chat-message-input');
 
@@ -12,7 +12,9 @@ centrifuge.on('disconnect', function (ctx) {
     console.log("disconnected", ctx);
 });
 
-const sub = centrifuge.subscribe('rooms:' + roomName, function (ctx) {
+const channelName = 'rooms:' + roomId;
+
+const sub = centrifuge.subscribe(channelName, function (ctx) {
     const chatNewThread = document.createElement('li');
     const chatNewMessage = document.createTextNode(ctx.data.user + ': ' + ctx.data.message);
     chatNewThread.appendChild(chatNewMessage);

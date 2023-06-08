@@ -21,11 +21,10 @@ class ChatRoom(models.Model):
     )
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ChatRoomMembership', related_name='chat_rooms')
     avatar = models.ImageField(upload_to='groupchats/', null=True, blank=True)
-    is_group = models.BooleanField(default=False)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_groups')
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_groups', null=True, blank=True)
 
     def is_group_chat(self):
-        return self.is_group
+        return self.chat_type == ChatType.GROUP.name
 
     def get_user_list(self):
         return [user.username for user in self.users.all()]
