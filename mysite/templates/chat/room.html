@@ -12,13 +12,14 @@
 <body>
 <ul id="chat-thread" class="chat-thread">
     {% for message in old_messages %}
-    <li>{{ message.message }}</li>
+    <li><strong>{{ message.user.username }}:</strong> {{ message.message }}</li>
     {% endfor %}
 </ul>
 <div class="chat-message">
     <input id="chat-message-input" class="chat-message-input" type="text" autocomplete="off" autofocus/>
 </div>
 {{ room_name|json_script:"room-name" }}
+
 {% block extrajs %}
 <script src="{% static 'js/room.js' %}"></script>
 {% endblock %}

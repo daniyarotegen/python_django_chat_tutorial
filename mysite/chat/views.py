@@ -23,9 +23,10 @@ def room(request, room_name):
 @csrf_exempt
 def connect(request):
     logger.debug(request.body)
+    user = request.user.username if request.user.is_authenticated else 'Anonymous'
     response = {
         'result': {
-            'user': 'tutorial-user'
+            'user': user
         }
     }
     return JsonResponse(response)
@@ -33,16 +34,22 @@ def connect(request):
 
 @csrf_exempt
 def publish(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Not authorized'}, status=403)
+
     logger.debug(request.body)
     data = json.loads(request.body.decode("utf-8"))
     message = data.get("data", {}).get("message")
     channel = data.get("channel")
     if channel and message:
         room_name = channel.split(":")[-1]
-        chat_message = ChatMessage(room_name=room_name, message=message)
+        chat_message = ChatMessage(room_name=room_name, message=message, user=request.user)
         chat_message.save()
     response = {
-        'result': {}
+        'result': {
+            'message': message,
+            'user': request.user.username
+        }
     }
     return JsonResponse(response)
 

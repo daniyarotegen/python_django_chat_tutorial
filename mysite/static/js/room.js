@@ -14,7 +14,7 @@ centrifuge.on('disconnect', function (ctx) {
 
 const sub = centrifuge.subscribe('rooms:' + roomName, function (ctx) {
     const chatNewThread = document.createElement('li');
-    const chatNewMessage = document.createTextNode(ctx.data.message);
+    const chatNewMessage = document.createTextNode(ctx.data.user + ': ' + ctx.data.message);
     chatNewThread.appendChild(chatNewMessage);
     chatThread.appendChild(chatNewThread);
     chatThread.scrollTop = chatThread.scrollHeight;
