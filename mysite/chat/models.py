@@ -3,6 +3,9 @@ from django.db import models
 from django.utils import timezone
 from enum import Enum
 from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ChatType(Enum):
@@ -34,6 +37,10 @@ class ChatRoomMembership(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        logger.debug(f"ChatRoomMembership created: User - {self.user.username}, Room - {self.chat_room.name}")
 
 
 class ChatMessage(models.Model):

@@ -10,7 +10,8 @@ from django.utils import timezone
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 import logging
-from .models import ChatMessage, ChatRoom, ChatRoomMembership, ChatType
+from .models import ChatMessage, ChatRoom, ChatType
+from django.db.models import Count, Q
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -34,27 +35,32 @@ class RoomView(LoginRequiredMixin, View):
 class StartChatView(LoginRequiredMixin, View):
     def get(self, request, username):
         other_user = get_object_or_404(User, username=username)
-        print(f'Other user username {other_user.username}')
+        logger.debug(f"Other user: {other_user.username if other_user else 'Not found'}")
 
-        rooms = ChatRoom.objects.filter(users__in=[request.user, other_user], chat_type=ChatType.PRIVATE.name)
+        rooms = ChatRoom.objects.filter(users=request.user, chat_type=ChatType.PRIVATE.name)
         room = None
-
         for potential_room in rooms:
-            room_memberships = ChatRoomMembership.objects.filter(chat_room=potential_room)
-            if room_memberships.count() == 2 and set([membership.user for membership in room_memberships]) == set(
-                    [request.user, other_user]):
+            if set(potential_room.users.all()) == set([request.user, other_user]):
                 room = potential_room
                 break
+
+        logger.debug(f"Rooms: {rooms}")
+        logger.debug(f"First room: {room}")
 
         if room is None:
             room = ChatRoom.objects.create(
                 name=f'Chat with {other_user.username}',
                 chat_type=ChatType.PRIVATE.name
             )
-            print(f'Chat with {other_user.username}')
             room.users.add(request.user, other_user)
+            room.save()
+            logger.debug(f"New room created: {room}")
+        else:
+            logger.debug(f"Room already exists: {room}")
 
+        logger.debug(f"Redirecting to room with ID: {str(room.id)}")
         return redirect(reverse('room_view', args=[str(room.id)]))
+
 
 
 class ChatsView(LoginRequiredMixin, View):
