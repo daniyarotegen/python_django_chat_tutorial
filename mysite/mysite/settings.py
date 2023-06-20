@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ohte()qz$hcz3#kj%^3#y1fsmr5ouy)kzy(khqxwoi+9$^ygys'
@@ -55,11 +56,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cen_8',
-        'USER': 'macbookair',
-        'PASSWORD': '618396',
-        'HOST': 'host.docker.internal',
-        'PORT': '',
+        'NAME': config('POSTGRES_DB'),
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'HOST': config('POSTGRES_HOST'),
+        'PORT': config('POSTGRES_PORT'),
     }
 }
 
